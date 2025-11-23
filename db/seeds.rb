@@ -8,3 +8,13 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 AdminUser.create!(email: 'admin@postalcoffee.test', password: 'password', password_confirmation: 'password') if Rails.env.development?
+
+Page.find_or_create_by!(slug: "about") do |page|
+  page.title = "About Us"
+  page.body  = "Write your about page content here."
+end
+
+Page.find_or_create_by!(slug: "contact") do |page|
+  page.title = "Contact Us"
+  page.body  = "Write your contact page content here."
+end
