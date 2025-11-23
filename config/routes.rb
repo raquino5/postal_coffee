@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get "products/index"
+  get "products/show"
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
@@ -13,5 +15,10 @@ Rails.application.routes.draw do
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
   # Defines the root path route ("/")
-  # root "posts#index"
+  # Front page: list of products
+  root "products#index"
+  # Products: index + show
+  resources :products, only: [:index, :show]
+  # Categories: show products in a category
+  resources :categories, only: [:show]
 end
