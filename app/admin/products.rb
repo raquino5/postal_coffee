@@ -24,18 +24,15 @@ ActiveAdmin.register Product do
   # Form used for New / Edit product
   form do |f|
     f.semantic_errors
-
     f.inputs "Product Details" do
-      # This lets you assign a Category to the Product
-      f.input :category        # ActiveAdmin will show a dropdown of Category.all
-
+      f.input :category
       f.input :name
       f.input :description
       f.input :price
       f.input :on_sale
       f.input :is_active
+      f.input :image, as: :file
     end
-
     f.actions   # Save / Cancel
   end
 
