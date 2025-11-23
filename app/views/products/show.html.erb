@@ -1,2 +1,24 @@
-<h1>Products#show</h1>
-<p>Find me in app/views/products/show.html.erb</p>
+<!-- app/views/products/show.html.erb -->
+
+<h1><%= @product.name %></h1>
+
+<p>
+  <%= link_to "Back to products", root_path %> |
+  <%= link_to @product.category.name, category_path(@product.category) %>
+</p>
+
+<% if @product.image.attached? %>
+  <div style="margin-bottom: 1rem;">
+    <%= image_tag url_for(@product.image), style: "max-width: 300px; height: auto;" %>
+  </div>
+<% end %>
+
+<p><strong>Category:</strong> <%= @product.category.name %></p>
+<p><strong>Price:</strong> $<%= @product.price %></p>
+
+<% if @product.on_sale? %>
+  <p style="color: red; font-weight: bold;">On Sale!</p>
+<% end %>
+
+<h3>Description</h3>
+<p><%= @product.description %></p>
