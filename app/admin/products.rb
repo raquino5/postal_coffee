@@ -16,7 +16,7 @@ ActiveAdmin.register Category do
   filter :created_at
 
   form do |f|
-    f.semantic_errors *f.object.errors.keys
+    f.semantic_errors
 
     f.inputs "Category Details" do
       f.input :name
