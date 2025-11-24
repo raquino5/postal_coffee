@@ -1,55 +1,46 @@
-ActiveAdmin.register Product do
-  # What an admin is allowed to submit in the form
-  permit_params :category_id, :name, :description, :price, :on_sale, :is_active
+ActiveAdmin.register Category do
+  permit_params :name
 
-  # List page in the admin (index)
   index do
     selectable_column
     id_column
     column :name
-    column :category
-    column :price
-    column :on_sale
-    column :is_active
+    column "Products count" do |category|
+      category.products.count
+    end
+    column :created_at
     actions
   end
 
-  # Optional filters on the side
   filter :name
-  filter :category
-  filter :price
-  filter :on_sale
-  filter :is_active
+  filter :created_at
 
-  # Form used for New / Edit product
   form do |f|
-    f.semantic_errors
-    f.inputs "Product Details" do
-      f.input :category
+    f.semantic_errors *f.object.errors.keys
+
+    f.inputs "Category Details" do
       f.input :name
-      f.input :description
-      f.input :price
-      f.input :on_sale
-      f.input :is_active
-      f.input :image, as: :file
     end
-    f.actions   # Save / Cancel
+
+    f.actions
   end
 
-  # Optional: show page
   show do
     attributes_table do
       row :id
       row :name
-      row :category
-      row :description
-      row :price
-      row :on_sale
-      row :is_active
       row :created_at
       row :updated_at
     end
 
-    active_admin_comments
+    panel "Products in this category" do
+      table_for category.products do
+        column :id
+        column :name
+        column :price
+        column :on_sale
+        column :is_active
+      end
+    end
   end
 end
