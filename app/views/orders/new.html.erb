@@ -2,7 +2,12 @@
 
 <h2>Your Order Summary</h2>
 
-<%= form_with model: @customer, url: orders_path, local: true do |f| %>
+<%= form_with model: @customer,
+              url: orders_path,
+              method: :post,
+              local: true,
+              data: { turbo: false } do |f| %>
+
   <h3>Customer Information</h3>
 
   <div>
