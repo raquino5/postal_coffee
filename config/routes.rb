@@ -19,7 +19,11 @@ Rails.application.routes.draw do
   # Front page: list of products
   root "products#index"
   # Products: index + show
-  resources :products, only: [:index, :show]
+  resources :products, only: [:index, :show] do
+    collection do
+      get :search
+    end
+  end
   # Categories: show products in a category
   resources :categories, only: [:show]
 end

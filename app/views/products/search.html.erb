@@ -1,0 +1,75 @@
+<h1>Search Products</h1>
+
+<!-- Search form -->
+<%= form_with url: search_products_path, method: :get, local: true do %>
+  <div style="margin-bottom: 1rem; display: flex; gap: 1rem; align-items: flex-end; flex-wrap: wrap;">
+    <div>
+      <label for="q"><strong>Keyword</strong></label><br>
+      <%= text_field_tag :q, @query, placeholder: "Search by name or description", style: "width: 250px;" %>
+    </div>
+
+    <div>
+      <label for="category_id"><strong>Category</strong></label><br>
+      <%= select_tag :category_id,
+          options_for_select(
+            [["All categories", ""]] + @categories.map { |c| [c.name, c.id] },
+            @selected_category_id
+          ),
+          include_blank: false %>
+    </div>
+
+    <div>
+      <%= submit_tag "Search", style: "padding: 0.4rem 0.8rem;" %>
+    </div>
+  </div>
+<% end %>
+
+<hr>
+
+<% if @products.any? %>
+  <p>
+    Showing <%= @products.count %> result(s)
+    <% if @query.present? %>
+      for "<strong><%= @query %></strong>"
+    <% end %>
+    <% if @selected_category_id.present? %>
+      in category
+      "<strong><%= @categories.find(@selected_category_id).name rescue 'Unknown' %></strong>"
+    <% end %>
+  </p>
+
+  <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1.5rem;">
+    <% @products.each do |product| %>
+      <div style="border: 1px solid #ccc; padding: 1rem;">
+        <% if product.image.attached? %>
+          <div style="margin-bottom: 0.5rem;">
+            <%= image_tag url_for(product.image), style: "max-width: 100%; height: auto;" %>
+          </div>
+        <% end %>
+
+        <h2 style="font-size: 1.1rem;">
+          <%= link_to product.name, product_path(product) %>
+        </h2>
+
+        <p><strong>Category:</strong> <%= product.category.name %></p>
+        <p><strong>Price:</strong> $<%= product.price %></p>
+
+        <% if product.on_sale? %>
+          <p style="color: red; font-weight: bold;">On Sale!</p>
+        <% end %>
+
+        <% if product.created_at >= 3.days.ago %>
+          <p style="color: green; font-weight: bold;">New!</p>
+        <% elsif product.updated_at >= 3.days.ago && product.created_at < 3.days.ago %>
+          <p style="color: blue; font-weight: bold;">Recently updated</p>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+  <div style="margin-top: 1.5rem; text-align: center;">
+    <%= paginate @products %>
+  </div>
+<% else %>
+  <p>No products found. Try a different keyword or category.</p>
+<% end %>

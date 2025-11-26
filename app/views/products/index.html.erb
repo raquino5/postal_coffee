@@ -1,11 +1,15 @@
 <h1>Our Products</h1>
 
+<p>
+  <%= link_to "Search Products", search_products_path %>
+</p>
+
 <div style="display: flex; gap: 2rem;">
   <!-- Sidebar: Categories -->
   <aside style="width: 200px;">
     <h3>Filter by Category</h3>
     <ul>
-      <li><%= link_to "All Products", root_path %></li>
+      <li><%= link_to "All Products", products_path %></li>
       <% @categories.each do |category| %>
         <li>
           <%= link_to category.name, category_path(category) %>
@@ -16,6 +20,29 @@
 
   <!-- Main: Products list -->
   <section style="flex: 1;">
+
+    <!-- NEW: Filter by status (requirement 2.4) -->
+    <div style="margin-bottom: 1rem; padding: 0.5rem 0;">
+      <h3>Filter by Status</h3>
+      <p>
+        <%= link_to "All",
+                    products_path,
+                    style: (@filter.blank? ? "font-weight: bold; text-decoration: underline;" : "") %>
+        |
+        <%= link_to "On Sale",
+                    products_path(filter: "on_sale"),
+                    style: (@filter == "on_sale" ? "font-weight: bold; text-decoration: underline; color: red;" : "") %>
+        |
+        <%= link_to "New (last 3 days)",
+                    products_path(filter: "new"),
+                    style: (@filter == "new" ? "font-weight: bold; text-decoration: underline;" : "") %>
+        |
+        <%= link_to "Recently Updated",
+                    products_path(filter: "recently_updated"),
+                    style: (@filter == "recently_updated" ? "font-weight: bold; text-decoration: underline;" : "") %>
+      </p>
+    </div>
+
     <% if @products.any? %>
       <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1.5rem;">
         <% @products.each do |product| %>
@@ -36,8 +63,19 @@
             <% if product.on_sale? %>
               <p style="color: red; font-weight: bold;">On Sale!</p>
             <% end %>
+
+            <!-- OPTIONAL: visible badges for new / recently updated -->
+            <% if product.created_at >= 3.days.ago %>
+              <p style="color: green; font-weight: bold;">New!</p>
+            <% elsif product.updated_at >= 3.days.ago && product.created_at < 3.days.ago %>
+              <p style="color: blue; font-weight: bold;">Recently updated</p>
+            <% end %>
           </div>
         <% end %>
+      </div>
+
+      <div style="margin-top: 1.5rem; text-align: center;">
+        <%= paginate @products %>
       </div>
     <% else %>
       <p>No products available.</p>

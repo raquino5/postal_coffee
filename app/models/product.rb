@@ -2,6 +2,18 @@
 class Product < ApplicationRecord
   belongs_to :category
   has_one_attached :image
+
+  scope :active, -> { where(is_active: true) }
+  scope :on_sale, -> { active.where(on_sale: true) }
+
+  scope :new_products, -> { active.where('created_at >= ?', 3.days.ago) }
+
+  scope :recently_updated, -> {
+    active
+      .where('updated_at >= ?', 3.days.ago)
+      .where('created_at < ?', 3.days.ago)
+  }
+
   validates :name, presence: true
   validates :description, presence: true
   validates :price, presence: true, numericality: { greater_than_or_equal_to: 0 }

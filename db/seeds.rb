@@ -22,7 +22,7 @@ Page.find_or_create_by!(slug: "contact") do |page|
   page.body  = "Write your contact page content here."
 end
 
-# --- CATEGORIES (ensure your 4 exist) ---
+# --- CATEGORIES ---
 category_names = ["House Blends", "Single Origin", "Decaf", "Gear"]
 
 categories = category_names.map do |name|
@@ -31,7 +31,7 @@ end
 
 puts "Ensured #{Category.count} categories"
 
-# --- SEED FROM CSV DATASET (no Faker, real dataset) ---
+# --- SEED FROM CSV DATASET (no Faker) ---
 def seed_from_csv(categories)
   csv_path = Rails.root.join("db", "coffee_seed_data.csv")
 
