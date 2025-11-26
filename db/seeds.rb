@@ -108,17 +108,21 @@ puts "Final product count: #{Product.count} products (CSV + scraped)"
 
 # --- PROVINCES ---
 provinces = [
-  { name: "Manitoba",           code: "MB" },
-  { name: "Ontario",            code: "ON" },
-  { name: "British Columbia",   code: "BC" },
-  { name: "Quebec",             code: "QC" },
-  { name: "Saskatchewan",       code: "SK" }
+  { name: "Manitoba",           code: "MB",       gst: 0.05, pst: 0.07,   hst: 0.00 },
+  { name: "Ontario",            code: "ON",       gst: 0.00, pst: 0.00,   hst: 0.13 },
+  { name: "British Columbia",   code: "BC",       gst: 0.05, pst: 0.07,   hst: 0.00 },
+  { name: "Quebec",             code: "QC",       gst: 0.05, pst: 0.09975,hst: 0.00 },
+  { name: "Saskatchewan",       code: "SK",       gst: 0.05, pst: 0.06,   hst: 0.00 }
 ]
 
 provinces.each do |attrs|
-  Province.find_or_create_by!(code: attrs[:code]) do |province|
-    province.name = attrs[:name]
-  end
+  province = Province.find_or_initialize_by(code: attrs[:code])
+  province.update!(
+    name: attrs[:name],
+    gst:  attrs[:gst],
+    pst:  attrs[:pst],
+    hst:  attrs[:hst]
+  )
 end
 
 puts "Seeded #{Province.count} provinces"
