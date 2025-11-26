@@ -105,3 +105,20 @@ end
 puts "Scraping products from webscraper.io..."
 scrape_products_into_categories(categories)
 puts "Final product count: #{Product.count} products (CSV + scraped)"
+
+# --- PROVINCES ---
+provinces = [
+  { name: "Manitoba",           code: "MB" },
+  { name: "Ontario",            code: "ON" },
+  { name: "British Columbia",   code: "BC" },
+  { name: "Quebec",             code: "QC" },
+  { name: "Saskatchewan",       code: "SK" }
+]
+
+provinces.each do |attrs|
+  Province.find_or_create_by!(code: attrs[:code]) do |province|
+    province.name = attrs[:name]
+  end
+end
+
+puts "Seeded #{Province.count} provinces"
