@@ -4,7 +4,19 @@ class OrdersController < ApplicationController
   def new
     redirect_to cart_path, alert: "Your cart is empty." and return if @cart.blank?
 
-    @customer = Customer.new
+    if user_signed_in?
+      @customer = Customer.new(
+        first_name: "",  # you can keep asking for name per order if you want
+        last_name: "",
+        email: current_user.email,
+        address: current_user.address,
+        city: current_user.city,
+        postal_code: current_user.postal_code,
+        province: current_user.province&.code || current_user.province&.name
+      )
+    else
+      @customer = Customer.new
+    end
   end
 
   def create

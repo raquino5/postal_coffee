@@ -2,8 +2,6 @@
 
 <h2>Your Order Summary</h2>
 
-<%# You can reuse cart logic here if you want to show the items %>
-
 <%= form_with model: @customer, url: orders_path, local: true do |f| %>
   <h3>Customer Information</h3>
 
@@ -45,4 +43,9 @@
   <div style="margin-top: 1rem;">
     <%= f.submit "Place Order" %>
   </div>
+
+  <% if user_signed_in? %>
+  <p>We’re using your saved address from your account. You can update it in “Edit Account”.</p>
+  <% end %>
+
 <% end %>
