@@ -23,6 +23,19 @@
   </head>
 
   <body>
-    <%= yield %>
+    <header style="padding: 0.5rem 1rem; border-bottom: 1px solid #ccc; margin-bottom: 1rem;">
+    <%= link_to "Home", root_path %> |
+
+    <% if user_signed_in? %>
+      Logged in as <%= current_user.email %> |
+      <%= link_to "Edit Account", edit_user_registration_path %> |
+      <%= link_to "Logout", destroy_user_session_path, method: :delete %>
+    <% else %>
+      <%= link_to "Sign Up", new_user_registration_path %> |
+      <%= link_to "Login", new_user_session_path %>
+    <% end %>
+  </header>
+
+  <%= yield %>
   </body>
 </html>
