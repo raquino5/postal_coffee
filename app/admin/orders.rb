@@ -1,6 +1,8 @@
 # app/admin/orders.rb
 ActiveAdmin.register Order do
-  actions :all, except: [:new, :edit, :destroy]
+  actions :all, except: [:new, :destroy]
+
+  permit_params :status
 
   includes :customer, order_items: :product
 
@@ -8,6 +10,8 @@ ActiveAdmin.register Order do
     selectable_column
     id_column
     column :created_at
+    column :status
+    column :payment_status
     column "Customer" do |order|
       customer = order.customer
       if customer
@@ -39,9 +43,7 @@ ActiveAdmin.register Order do
 
     column "Products" do |order|
       safe_join(
-        order.order_items.map do |item|
-          "#{item.product.name} (x#{item.quantity})"
-        end,
+        order.order_items.map { |item| "#{item.product.name} (x#{item.quantity})" },
         tag.br
       )
     end
@@ -54,6 +56,8 @@ ActiveAdmin.register Order do
       row :id
       row :created_at
       row :updated_at
+      row :status
+      row :payment_status
       row :customer do |order|
         c = order.customer
         if c
@@ -72,14 +76,32 @@ ActiveAdmin.register Order do
     panel "Line Items" do
       table_for order.order_items do
         column :product
-        column("Price")    { |item| number_to_currency(item.price) }
+        column("Price")      { |item| number_to_currency(item.price) }
         column :quantity
         column("Line Total") { |item| number_to_currency(item.line_total) }
       end
     end
   end
 
+  form do |f|
+    f.inputs do
+      f.input :status, as: :select, collection: Order.statuses.keys
+    end
+    f.actions
+  end
+
+  action_item :mark_shipped, only: :show, if: -> { resource.paid? && !resource.shipped? } do
+    link_to "Mark as shipped", mark_shipped_admin_order_path(resource), method: :put
+  end
+
+  member_action :mark_shipped, method: :put do
+    resource.update(status: "shipped")
+    redirect_to resource_path, notice: "Order marked as shipped."
+  end
+
   filter :id
+  filter :status
+  filter :payment_status
   filter :created_at
   filter :customer_email_cont, as: :string, label: "Customer email"
 

@@ -2,11 +2,17 @@ class Order < ApplicationRecord
   belongs_to :customer
   has_many :order_items, dependent: :destroy
 
+  enum :status, {
+    new: "new",
+    paid: "paid",
+    shipped: "shipped"
+  }, _default: "new"
+
   enum :payment_status, {
     pending: "pending",
     paid: "paid",
     failed: "failed"
-  }, default: "pending"
+  }, _prefix: true, allow_nil: true
 
   def full_tax_total
     total_gst.to_f + total_pst.to_f + total_hst.to_f
