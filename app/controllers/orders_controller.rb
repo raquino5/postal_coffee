@@ -87,9 +87,14 @@ class OrdersController < ApplicationController
     end
 
     rates = TaxTable.for(customer.province)
-    gst   = subtotal * rates[:gst]
-    pst   = subtotal * rates[:pst]
-    hst   = subtotal * rates[:hst]
+
+    gst_rate = rates[:gst]
+    pst_rate = rates[:pst]
+    hst_rate = rates[:hst]
+
+    gst = subtotal * gst_rate
+    pst = subtotal * pst_rate
+    hst = subtotal * hst_rate
     total = subtotal + gst + pst + hst
 
     @order.subtotal   = subtotal
@@ -97,5 +102,8 @@ class OrdersController < ApplicationController
     @order.total_pst  = pst
     @order.total_hst  = hst
     @order.total      = total
+
+    @order.gst_rate   = gst_rate
+    @order.pst_rate   = pst_rate
   end
 end
