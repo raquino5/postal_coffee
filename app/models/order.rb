@@ -6,13 +6,13 @@ class Order < ApplicationRecord
     new: "new",
     paid: "paid",
     shipped: "shipped"
-  }, _default: "new"
+  }, default: "new", prefix: true
 
   enum :payment_status, {
     pending: "pending",
     paid: "paid",
     failed: "failed"
-  }, _prefix: true, allow_nil: true
+  }, prefix: true
 
   def full_tax_total
     total_gst.to_f + total_pst.to_f + total_hst.to_f
@@ -23,6 +23,7 @@ class Order < ApplicationRecord
       id
       customer_id
       status
+      payment_status
       subtotal
       total
       total_gst
