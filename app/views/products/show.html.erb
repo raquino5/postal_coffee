@@ -4,7 +4,8 @@
 
 <p>
   <%= link_to "Back to products", root_path %> |
-  <%= link_to @product.category.name, category_path(@product.category) %>
+  <%= link_to @product.category.name, category_path(@product.category) %> |
+  <%= link_to "View Cart", cart_path %>
 </p>
 
 <% if @product.image.attached? %>
@@ -19,6 +20,21 @@
 <% if @product.on_sale? %>
   <p style="color: red; font-weight: bold;">On Sale!</p>
 <% end %>
+
+<div style="margin: 1rem 0; padding: 0.75rem; border: 1px solid #ccc;">
+  <h3>Add to Cart</h3>
+
+  <%= form_with url: add_item_cart_path, method: :post, local: true do %>
+    <%= hidden_field_tag :product_id, @product.id %>
+
+    <div style="margin-bottom: 0.5rem;">
+      <label for="quantity"><strong>Quantity</strong></label><br>
+      <%= number_field_tag :quantity, 1, min: 1, style: "width: 80px;" %>
+    </div>
+
+    <%= submit_tag "Add to Cart", style: "padding: 0.4rem 0.8rem;" %>
+  <% end %>
+</div>
 
 <h3>Description</h3>
 <p><%= @product.description %></p>

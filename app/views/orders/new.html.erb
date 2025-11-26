@@ -1,0 +1,48 @@
+<h1>Checkout</h1>
+
+<h2>Your Order Summary</h2>
+
+<%# You can reuse cart logic here if you want to show the items %>
+
+<%= form_with model: @customer, url: orders_path, local: true do |f| %>
+  <h3>Customer Information</h3>
+
+  <div>
+    <%= f.label :first_name %><br>
+    <%= f.text_field :first_name %>
+  </div>
+
+  <div>
+    <%= f.label :last_name %><br>
+    <%= f.text_field :last_name %>
+  </div>
+
+  <div>
+    <%= f.label :email %><br>
+    <%= f.email_field :email %>
+  </div>
+
+  <div>
+    <%= f.label :address %><br>
+    <%= f.text_field :address %>
+  </div>
+
+  <div>
+    <%= f.label :city %><br>
+    <%= f.text_field :city %>
+  </div>
+
+  <div>
+    <%= f.label :province %><br>
+    <%= f.select :province, [["Manitoba", "MB"], ["Ontario", "ON"], ["British Columbia", "BC"], ["Quebec", "QC"], ["Saskatchewan", "SK"]], include_blank: "Select province" %>
+  </div>
+
+  <div>
+    <%= f.label :postal_code %><br>
+    <%= f.text_field :postal_code %>
+  </div>
+
+  <div style="margin-top: 1rem;">
+    <%= f.submit "Place Order" %>
+  </div>
+<% end %>

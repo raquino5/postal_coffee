@@ -7,6 +7,14 @@
 <div style="display: flex; gap: 2rem;">
   <!-- Sidebar: Categories -->
   <aside style="width: 200px;">
+    <h3>Shopping</h3>
+    <ul>
+      <li>
+      <%= link_to cart_path do %>
+        View Cart (<%= cart_count %>)
+      <% end %>
+      </li>
+    </ul>
     <h3>Filter by Category</h3>
     <ul>
       <li><%= link_to "All Products", products_path %></li>
@@ -21,7 +29,6 @@
   <!-- Main: Products list -->
   <section style="flex: 1;">
 
-    <!-- NEW: Filter by status (requirement 2.4) -->
     <div style="margin-bottom: 1rem; padding: 0.5rem 0;">
       <h3>Filter by Status</h3>
       <p>
@@ -64,7 +71,6 @@
               <p style="color: red; font-weight: bold;">On Sale!</p>
             <% end %>
 
-            <!-- OPTIONAL: visible badges for new / recently updated -->
             <% if product.created_at >= 3.days.ago %>
               <p style="color: green; font-weight: bold;">New!</p>
             <% elsif product.updated_at >= 3.days.ago && product.created_at < 3.days.ago %>

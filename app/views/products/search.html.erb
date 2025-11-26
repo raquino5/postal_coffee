@@ -1,7 +1,14 @@
 <h1>Search Products</h1>
 
+<div style="display:flex; justify-content:space-between; margin-bottom:1rem;">
+  <%= link_to "← Back to Products", products_path,
+        style: "padding: 0.4rem 0.8rem; background:#333; color:white; border-radius:4px; text-decoration:none;" %>
+
+  <%= link_to "View Cart (#{cart_count})", cart_path,
+        style: "padding: 0.4rem 0.8rem; background:#555; color:white; border-radius:4px; text-decoration:none;" %>
+</div>
 <!-- Search form -->
-<%= form_with url: search_products_path, method: :get, local: true do %>
+<%= form_with url: add_item_cart_path(from: "search", q: @query, category_id: @selected_category_id), method: :post, local: true do %>
   <div style="margin-bottom: 1rem; display: flex; gap: 1rem; align-items: flex-end; flex-wrap: wrap;">
     <div>
       <label for="q"><strong>Keyword</strong></label><br>

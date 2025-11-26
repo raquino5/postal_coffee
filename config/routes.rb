@@ -24,6 +24,13 @@ Rails.application.routes.draw do
       get :search
     end
   end
-  # Categories: show products in a category
+
+  resource :cart, only: [:show] do
+    post   :add_item
+    patch  :update_item
+    delete :remove_item
+  end
+
   resources :categories, only: [:show]
+  resources :orders, only: [:new, :create, :show]
 end

@@ -1,0 +1,37 @@
+<h1>Order #<%= @order.id %></h1>
+
+<h2>Customer</h2>
+<p>
+  <%= @order.customer.first_name %> <%= @order.customer.last_name %><br>
+  <%= @order.customer.address %><br>
+  <%= @order.customer.city %>, <%= @order.customer.province %> <%= @order.customer.postal_code %><br>
+  <%= @order.customer.email %>
+</p>
+
+<h2>Items</h2>
+<table border="1" cellpadding="8" cellspacing="0">
+  <thead>
+    <tr>
+      <th>Product</th>
+      <th>Price</th>
+      <th>Quantity</th>
+      <th>Line Total</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @order.order_items.each do |item| %>
+      <tr>
+        <td><%= item.product.name %></td>
+        <td>$<%= '%.2f' % item.price %></td>
+        <td><%= item.quantity %></td>
+        <td>$<%= '%.2f' % item.line_total %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<p><strong>Subtotal:</strong> $<%= '%.2f' % @order.subtotal %></p>
+<p><strong>GST:</strong> $<%= '%.2f' % @order.total_gst %></p>
+<p><strong>PST:</strong> $<%= '%.2f' % @order.total_pst %></p>
+<p><strong>HST:</strong> $<%= '%.2f' % @order.total_hst %></p>
+<p><strong>Total:</strong> $<%= '%.2f' % @order.total %></p>
