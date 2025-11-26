@@ -34,4 +34,5 @@ Rails.application.routes.draw do
 
   resources :categories, only: [:show]
   resources :orders, only: [:new, :create, :show]
+  get "my_orders", to: "orders#customer_orders", as: :my_orders
 end

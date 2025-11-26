@@ -1,12 +1,13 @@
 class OrdersController < ApplicationController
   before_action :load_cart
+  before_action :authenticate_user!, only: [:customer_orders]
 
   def new
     redirect_to cart_path, alert: "Your cart is empty." and return if @cart.blank?
 
     if user_signed_in?
       @customer = Customer.new(
-        first_name: "",  # you can keep asking for name per order if you want
+        first_name: "",
         last_name: "",
         email: current_user.email,
         address: current_user.address,
@@ -44,6 +45,13 @@ class OrdersController < ApplicationController
     @order = Order.find(params[:id])
   end
 
+  def customer_orders
+    @orders = Order.joins(:customer)
+                   .where(customers: { email: current_user.email })
+                   .includes(order_items: :product)
+                   .order(created_at: :desc)
+  end
+
   private
 
   def load_cart
@@ -62,7 +70,6 @@ class OrdersController < ApplicationController
     products = Product.where(id: product_ids)
 
     subtotal = 0.0
-
     @order = customer.orders.build(status: "new")
 
     products.each do |product|
@@ -80,9 +87,9 @@ class OrdersController < ApplicationController
     end
 
     rates = TaxTable.for(customer.province)
-    gst = subtotal * rates[:gst]
-    pst = subtotal * rates[:pst]
-    hst = subtotal * rates[:hst]
+    gst   = subtotal * rates[:gst]
+    pst   = subtotal * rates[:pst]
+    hst   = subtotal * rates[:hst]
     total = subtotal + gst + pst + hst
 
     @order.subtotal   = subtotal

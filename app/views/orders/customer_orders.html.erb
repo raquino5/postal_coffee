@@ -1,0 +1,44 @@
+<h1>My Orders</h1>
+
+<p>
+  <%= link_to "← Back to Products", products_path %>
+</p>
+
+<% if @orders.any? %>
+  <% @orders.each do |order| %>
+    <div style="border: 1px solid #ccc; padding: 1rem; margin-bottom: 1rem;">
+      <h2>Order #<%= order.id %></h2>
+      <p><strong>Date:</strong> <%= order.created_at.strftime("%Y-%m-%d %H:%M") %></p>
+
+      <h3>Items</h3>
+      <table border="1" cellpadding="6" cellspacing="0">
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Price</th>
+            <th>Qty</th>
+            <th>Line Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% order.order_items.each do |item| %>
+            <tr>
+              <td><%= item.product.name %></td>
+              <td>$<%= "%.2f" % item.price %></td>
+              <td><%= item.quantity %></td>
+              <td>$<%= "%.2f" % item.line_total %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+      <p><strong>Subtotal:</strong> $<%= "%.2f" % order.subtotal %></p>
+      <p><strong>GST:</strong> $<%= "%.2f" % order.total_gst %></p>
+      <p><strong>PST:</strong> $<%= "%.2f" % order.total_pst %></p>
+      <p><strong>HST:</strong> $<%= "%.2f" % order.total_hst %></p>
+      <p><strong>Grand Total:</strong> $<%= "%.2f" % order.total %></p>
+    </div>
+  <% end %>
+<% else %>
+  <p>You have no past orders yet.</p>
+<% end %>
