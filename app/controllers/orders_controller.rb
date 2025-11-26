@@ -28,9 +28,21 @@ class OrdersController < ApplicationController
     if @customer.save
       build_order_for(@customer)
 
+      @order.payment_provider = "stripe"
+      @order.payment_status   = "pending"
+
       if @order.save
-        session[:cart] = {}
-        redirect_to @order, notice: "Thank you! Your order has been placed."
+        checkout_session = Stripe::Checkout::Session.create(
+          mode: "payment",
+          payment_method_types: ["card"],
+          line_items: stripe_line_items_for(@order),
+          success_url: payments_success_url + "?session_id={CHECKOUT_SESSION_ID}",
+          cancel_url: payments_cancel_url(order_id: @order.id)
+        )
+
+        @order.update(payment_reference: checkout_session.id)
+
+        redirect_to checkout_session.url, allow_other_host: true
       else
         flash.now[:alert] = "Could not save order."
         render :new, status: :unprocessable_entity
@@ -105,5 +117,21 @@ class OrdersController < ApplicationController
 
     @order.gst_rate   = gst_rate
     @order.pst_rate   = pst_rate
+    @order.hst_rate   = hst_rate
+  end
+
+  def stripe_line_items_for(order)
+    order.order_items.map do |item|
+      {
+        price_data: {
+          currency: "cad",
+          product_data: {
+            name: item.product.name
+          },
+          unit_amount: (item.price.to_f * 100).to_i # cents
+        },
+        quantity: item.quantity
+      }
+    end
   end
 end

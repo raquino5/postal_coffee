@@ -1,0 +1,1 @@
+Stripe.api_key = ENV.fetch("STRIPE_SECRET_KEY") { "sk_test_51SXbuiEX5HI3967oI0Gsv5wtdZTlu3akcSMrVQ1eiYdmSfJLlOzzVFcL6o1eMiBHVldGYM3uAc1D7qrofe9NZudG00wj9kBm0u" }

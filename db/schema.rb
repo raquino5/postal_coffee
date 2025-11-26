@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_26_060428) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_26_060613) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -110,6 +110,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_26_060428) do
     t.decimal "gst_rate", precision: 5, scale: 4
     t.decimal "pst_rate", precision: 5, scale: 4
     t.decimal "hst_rate", precision: 5, scale: 4
+    t.string "payment_status"
+    t.string "payment_provider"
+    t.string "payment_reference"
     t.index ["customer_id"], name: "index_orders_on_customer_id"
   end
 
