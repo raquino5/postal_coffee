@@ -1,0 +1,29 @@
+{
+  "name": "postal_coffee",
+  "version": "1.0.0",
+  "description": "This README would normally document whatever steps are necessary to get the application up and running.",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/raquino5/postal_coffee.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/raquino5/postal_coffee/issues"
+  },
+  "homepage": "https://github.com/raquino5/postal_coffee#readme",
+  "devDependencies": {
+    "cypress": "^15.7.0"
+  }
+}
