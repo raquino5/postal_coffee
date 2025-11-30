@@ -1,56 +1,78 @@
 <h1>Checkout</h1>
-
 <h2>Your Order Summary</h2>
 
 <%= form_with model: @customer,
               url: orders_path,
               method: :post,
               local: true,
-              data: { turbo: false } do |f| %>
+              data: { turbo: false },
+              html: { class: "card p-4 mb-4" } do |f| %>
 
-  <h3>Customer Information</h3>
+  <h3 class="mb-3">Customer Information</h3>
 
-  <div>
-    <%= f.label :first_name %><br>
-    <%= f.text_field :first_name %>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="form-group mb-3">
+        <%= f.label :first_name, "First name" %>
+        <%= f.text_field :first_name, class: "form-control" %>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="form-group mb-3">
+        <%= f.label :last_name, "Last name" %>
+        <%= f.text_field :last_name, class: "form-control" %>
+      </div>
+    </div>
   </div>
 
-  <div>
-    <%= f.label :last_name %><br>
-    <%= f.text_field :last_name %>
+  <div class="form-group mb-3">
+    <%= f.label :email, "Email" %>
+    <%= f.email_field :email, class: "form-control" %>
   </div>
 
-  <div>
-    <%= f.label :email %><br>
-    <%= f.email_field :email %>
+  <div class="form-group mb-3">
+    <%= f.label :address, "Address" %>
+    <%= f.text_field :address, class: "form-control" %>
   </div>
 
-  <div>
-    <%= f.label :address %><br>
-    <%= f.text_field :address %>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="form-group mb-3">
+        <%= f.label :city, "City" %>
+        <%= f.text_field :city, class: "form-control" %>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="form-group mb-3">
+        <%= f.label :province, "Province" %>
+        <%= f.select :province,
+                     [["Manitoba", "MB"],
+                      ["Ontario", "ON"],
+                      ["British Columbia", "BC"],
+                      ["Quebec", "QC"],
+                      ["Saskatchewan", "SK"]],
+                     { include_blank: "Select province" },
+                     class: "form-select" %>
+      </div>
+    </div>
   </div>
 
-  <div>
-    <%= f.label :city %><br>
-    <%= f.text_field :city %>
+  <div class="form-group mb-4">
+    <%= f.label :postal_code, "Postal code" %>
+    <%= f.text_field :postal_code, class: "form-control" %>
   </div>
 
-  <div>
-    <%= f.label :province %><br>
-    <%= f.select :province, [["Manitoba", "MB"], ["Ontario", "ON"], ["British Columbia", "BC"], ["Quebec", "QC"], ["Saskatchewan", "SK"]], include_blank: "Select province" %>
-  </div>
+  <div class="d-flex align-items-center gap-3">
+    <%= f.submit "Place Order", class: "btn btn-primary" %>
 
-  <div>
-    <%= f.label :postal_code %><br>
-    <%= f.text_field :postal_code %>
+    <% if user_signed_in? %>
+      <p class="mb-0 text-muted">
+        We’re using your saved address from your account.
+        You can update it in “Edit Account”.
+      </p>
+    <% end %>
   </div>
-
-  <div style="margin-top: 1rem;">
-    <%= f.submit "Place Order" %>
-  </div>
-
-  <% if user_signed_in? %>
-  <p>We’re using your saved address from your account. You can update it in “Edit Account”.</p>
-  <% end %>
 
 <% end %>

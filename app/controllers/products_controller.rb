@@ -1,5 +1,11 @@
 class ProductsController < ApplicationController
   def index
+
+    unless session[:visited]
+      flash[:greeting] = "Welcome to Postal Coffee! ☕"
+      session[:visited] = true
+    end
+
     @filter = params[:filter]
 
     @products =

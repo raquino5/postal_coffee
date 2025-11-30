@@ -1,30 +1,36 @@
-<h1>Our Products</h1>
+<h1 class="mb-4">Our Products</h1>
 
-<p>
-  <%= link_to "Search Products", search_products_path, class: "btn btn-secondary" %>
-</p>
+<div class="mb-4">
+  <%= link_to "Search Products",
+              search_products_path,
+              class: "btn btn-secondary" %>
+</div>
 
 <div class="layout-with-sidebar">
   <aside class="sidebar">
     <%= render "devise/shared/product_sidebar",
-           categories: @categories,
-           cart_count: cart_count %>
+               categories: @categories,
+               cart_count: cart_count %>
   </aside>
 
   <section class="products-main">
+
     <%= render "products/filters", filter: @filter %>
 
     <% if @products.any? %>
       <div class="product-grid">
         <%= render @products %>
-        <%# this automatically uses _product.html.erb for each @product %>
       </div>
 
-      <div class="pagination-wrapper">
+      <div class="pagination-wrapper mt-4">
         <%= paginate @products %>
       </div>
+
     <% else %>
-      <p>No products available.</p>
+
+      <p class="text-muted mt-3">No products available.</p>
+
     <% end %>
+
   </section>
 </div>

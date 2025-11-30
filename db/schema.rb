@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_26_060613) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_30_073017) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -124,6 +124,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_26_060613) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "product_tags", force: :cascade do |t|
+    t.bigint "product_id", null: false
+    t.bigint "tag_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["product_id"], name: "index_product_tags_on_product_id"
+    t.index ["tag_id"], name: "index_product_tags_on_tag_id"
+  end
+
   create_table "products", force: :cascade do |t|
     t.bigint "category_id", null: false
     t.string "name"
@@ -142,6 +151,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_26_060613) do
     t.decimal "gst", precision: 5, scale: 4
     t.decimal "pst", precision: 5, scale: 4
     t.decimal "hst", precision: 5, scale: 4
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -168,6 +183,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_26_060613) do
   add_foreign_key "order_items", "orders"
   add_foreign_key "order_items", "products"
   add_foreign_key "orders", "customers"
+  add_foreign_key "product_tags", "products"
+  add_foreign_key "product_tags", "tags"
   add_foreign_key "products", "categories"
   add_foreign_key "users", "provinces"
 end

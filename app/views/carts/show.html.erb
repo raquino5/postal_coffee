@@ -1,50 +1,81 @@
-<h1>Your Shopping Cart</h1>
+<h1 class="mb-4">Your Shopping Cart</h1>
 
-<p>
-  <%= link_to "Continue Shopping", products_path,
-        style: "padding: 0.5rem 1rem; background:#333; color:white; border-radius:4px; text-decoration:none;" %>
-</p>
+<div class="mb-3">
+  <%= link_to "Continue Shopping",
+        products_path,
+        class: "btn btn-secondary" %>
+</div>
 
 <% if @cart_items.any? %>
-  <table border="1" cellpadding="8" cellspacing="0">
-    <thead>
-      <tr>
-        <th>Product</th>
-        <th>Price</th>
-        <th>Quantity</th>
-        <th>Line Total</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @cart_items.each do |item| %>
-        <% product = item[:product] %>
+
+  <div class="table-responsive mb-4">
+    <table class="table align-middle">
+      <thead class="table-light">
         <tr>
-          <td><%= link_to product.name, product_path(product) %></td>
-          <td>$<%= product.price %></td>
-          <td>
-            <!-- EDIT QUANTITY -->
-            <%= form_with url: update_item_cart_path, method: :patch, local: true do %>
-              <%= hidden_field_tag :product_id, product.id %>
-              <%= number_field_tag :quantity, item[:quantity], min: 0 %>
-              <%= submit_tag "Update" %>
-            <% end %>
-          </td>
-          <td>$<%= '%.2f' % item[:line_total] %></td>
-          <td>
-            <%= button_to "Remove",
-                          remove_item_cart_path(product_id: product.id),
-                          method: :delete,
-                          data: { confirm: "Remove this item from cart?" } %>
-          </td>
+          <th>Product</th>
+          <th>Price</th>
+          <th style="width: 160px;">Quantity</th>
+          <th>Line Total</th>
+          <th>Actions</th>
         </tr>
-      <% end %>
-    </tbody>
-  </table>
+      </thead>
 
-  <p><strong>Subtotal:</strong> $<%= '%.2f' % @subtotal %></p>
+      <tbody>
+        <% @cart_items.each do |item| %>
+          <% product = item[:product] %>
 
-  <p><%= link_to "Proceed to Checkout", new_order_path %></p>
+          <tr>
+            <td>
+              <%= link_to product.name, product_path(product), class: "text-decoration-none" %>
+            </td>
+
+            <td>$<%= product.price %></td>
+
+            <td>
+              <%= form_with url: update_item_cart_path,
+                            method: :patch,
+                            local: true,
+                            class: "d-flex gap-2 align-items-center" do %>
+
+                <%= hidden_field_tag :product_id, product.id %>
+                <%= number_field_tag :quantity,
+                      item[:quantity],
+                      min: 0,
+                      class: "form-control",
+                      style: "width: 70px;" %>
+
+                <%= submit_tag "Update", class: "btn btn-sm btn-primary" %>
+              <% end %>
+            </td>
+
+            <td>
+              $<%= "%.2f" % item[:line_total] %>
+            </td>
+
+            <td>
+              <%= button_to "Remove",
+                            remove_item_cart_path(product_id: product.id),
+                            method: :delete,
+                            data: { confirm: "Remove this item from cart?" },
+                            class: "btn btn-sm btn-danger" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="fs-5">
+    <strong>Subtotal:</strong>
+    $<%= "%.2f" % @subtotal %>
+  </p>
+
+  <div class="mt-3">
+    <%= link_to "Proceed to Checkout",
+          new_order_path,
+          class: "btn btn-primary btn-lg" %>
+  </div>
+
 <% else %>
   <p>Your cart is empty.</p>
 <% end %>

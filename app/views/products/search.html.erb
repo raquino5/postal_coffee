@@ -1,40 +1,49 @@
-<h1>Search Products</h1>
+<h1 class="mb-3">Search Products</h1>
 
-<div style="display:flex; justify-content:space-between; margin-bottom:1rem;">
-  <%= link_to "← Back to Products", products_path,
-        style: "padding: 0.4rem 0.8rem; background:#333; color:white; border-radius:4px; text-decoration:none;" %>
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <%= link_to "Back to Products",
+        products_path,
+        class: "btn btn-secondary" %>
 
-  <%= link_to "View Cart (#{cart_count})", cart_path,
-        style: "padding: 0.4rem 0.8rem; background:#555; color:white; border-radius:4px; text-decoration:none;" %>
+  <%= link_to "View Cart (#{cart_count})",
+        cart_path,
+        class: "btn btn-outline-secondary" %>
 </div>
-<!-- Search form -->
-<%= form_with url: search_products_path, method: :get, local: true do %>
-  <div style="margin-bottom: 1rem; display: flex; gap: 1rem; align-items: flex-end; flex-wrap: wrap;">
-    <div>
-      <label for="q"><strong>Keyword</strong></label><br>
-      <%= text_field_tag :q, @query, placeholder: "Search by name or description", style: "width: 250px;" %>
-    </div>
 
-    <div>
-      <label for="category_id"><strong>Category</strong></label><br>
-      <%= select_tag :category_id,
-          options_for_select(
-            [["All categories", ""]] + @categories.map { |c| [c.name, c.id] },
-            @selected_category_id
-          ),
-          include_blank: false %>
-    </div>
+<div class="card mb-4">
+  <%= form_with url: search_products_path,
+                method: :get,
+                local: true do %>
+    <div class="row g-3 align-items-end">
+      <div class="col-md-5">
+        <%= label_tag :q, "Keyword", class: "form-label" %>
+        <%= text_field_tag :q,
+              @query,
+              placeholder: "Search by name or description",
+              class: "form-control" %>
+      </div>
 
-    <div>
-      <%= submit_tag "Search", style: "padding: 0.4rem 0.8rem;" %>
-    </div>
-  </div>
-<% end %>
+      <div class="col-md-4">
+        <%= label_tag :category_id, "Category", class: "form-label" %>
+        <%= select_tag :category_id,
+              options_for_select(
+                [["All categories", ""]] + @categories.map { |c| [c.name, c.id] },
+                @selected_category_id
+              ),
+              include_blank: false,
+              class: "form-select" %>
+      </div>
 
-<hr>
+      <div class="col-md-3">
+        <%= submit_tag "Search",
+              class: "btn btn-primary mt-2 mt-md-0" %>
+      </div>
+    </div>
+  <% end %>
+</div>
 
 <% if @products.any? %>
-  <p>
+  <p class="mb-3">
     Showing <%= @products.count %> result(s)
     <% if @query.present? %>
       for "<strong><%= @query %></strong>"
@@ -45,36 +54,46 @@
     <% end %>
   </p>
 
-  <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1.5rem;">
+  <div class="product-grid">
     <% @products.each do |product| %>
-      <div style="border: 1px solid #ccc; padding: 1rem;">
+      <div class="card product-card">
         <% if product.image.attached? %>
-          <div style="margin-bottom: 0.5rem;">
-            <%= image_tag url_for(product.image), style: "max-width: 100%; height: auto;" %>
+          <div class="product-image">
+            <%= image_tag url_for(product.image), class: "img-fluid" %>
           </div>
         <% end %>
 
-        <h2 style="font-size: 1.1rem;">
-          <%= link_to product.name, product_path(product) %>
+        <h2 class="product-name">
+          <%= link_to product.name,
+                product_path(product),
+                class: "product-name-link" %>
         </h2>
 
-        <p><strong>Category:</strong> <%= product.category.name %></p>
-        <p><strong>Price:</strong> $<%= product.price %></p>
+        <p class="product-meta">
+          <strong>Category:</strong> <%= product.category.name %>
+        </p>
 
-        <% if product.on_sale? %>
-          <p style="color: red; font-weight: bold;">On Sale!</p>
-        <% end %>
+        <p class="product-price">
+          <strong>Price:</strong>
+          $<%= "%.2f" % product.price %>
+        </p>
 
-        <% if product.created_at >= 3.days.ago %>
-          <p style="color: green; font-weight: bold;">New!</p>
-        <% elsif product.updated_at >= 3.days.ago && product.created_at < 3.days.ago %>
-          <p style="color: blue; font-weight: bold;">Recently updated</p>
-        <% end %>
+        <div class="product-badges">
+          <% if product.on_sale? %>
+            <span class="badge badge-sale">On Sale</span>
+          <% end %>
+
+          <% if product.created_at >= 3.days.ago %>
+            <span class="badge badge-new">New</span>
+          <% elsif product.updated_at >= 3.days.ago && product.created_at < 3.days.ago %>
+            <span class="badge badge-updated">Recently updated</span>
+          <% end %>
+        </div>
       </div>
     <% end %>
   </div>
 
-  <div style="margin-top: 1.5rem; text-align: center;">
+  <div class="pagination-wrapper">
     <%= paginate @products %>
   </div>
 <% else %>

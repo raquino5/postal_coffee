@@ -1,21 +1,23 @@
 <!-- app/views/products/_filters.html.erb -->
-<div class="card product-filters">
-  <h3>Filter by Status</h3>
-  <p class="filter-links">
+
+<div class="card product-filters p-3 mb-3">
+  <h2 class="mb-2">Filter by Status</h2>
+
+  <div class="filter-links d-flex flex-wrap gap-2">
     <%= link_to "All",
                 products_path,
-                class: "filter-link#{' filter-link--active' if filter.blank?}" %>
-    |
+                class: "filter-link #{'filter-link--active' if filter.blank?}" %>
+
     <%= link_to "On Sale",
                 products_path(filter: "on_sale"),
-                class: "filter-link#{' filter-link--active' if filter == 'on_sale'}" %>
-    |
+                class: "filter-link #{'filter-link--active' if filter == 'on_sale'}" %>
+
     <%= link_to "New (last 3 days)",
                 products_path(filter: "new"),
-                class: "filter-link#{' filter-link--active' if filter == 'new'}" %>
-    |
+                class: "filter-link #{'filter-link--active' if filter == 'new'}" %>
+
     <%= link_to "Recently Updated",
                 products_path(filter: "recently_updated"),
-                class: "filter-link#{' filter-link--active' if filter == 'recently_updated'}" %>
-  </p>
+                class: "filter-link #{'filter-link--active' if filter == 'recently_updated'}" %>
+  </div>
 </div>

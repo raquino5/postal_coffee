@@ -1,64 +1,107 @@
-<h2>Edit <%= resource_name.to_s.humanize %></h2>
+<h1 class="mb-4">Edit Account</h1>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
-  <%= render "users/shared/error_messages", resource: resource %>
+<div class="card p-4 mb-4">
+  <h2 class="mb-3">Update Your Details</h2>
 
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-  </div>
+  <%= form_for(resource,
+               as: resource_name,
+               url: registration_path(resource_name),
+               html: { method: :put }) do |f| %>
 
-  <div class="field">
-    <%= f.label :address %><br />
-    <%= f.text_field :address %>
-  </div>
+    <%= render "users/shared/error_messages", resource: resource %>
 
-  <div class="field">
-    <%= f.label :city %><br />
-    <%= f.text_field :city %>
-  </div>
+    <!-- Email -->
+    <div class="mb-3">
+      <%= f.label :email, class: "form-label" %>
+      <%= f.email_field :email,
+            autofocus: true,
+            autocomplete: "email",
+            class: "form-control" %>
+    </div>
 
-  <div class="field">
-    <%= f.label :postal_code %><br />
-    <%= f.text_field :postal_code %>
-  </div>
+    <h3 class="mt-4 mb-3">Address Information</h3>
 
-  <div class="field">
-    <%= f.label :province_id, "Province" %><br />
-    <%= f.collection_select :province_id, Province.all, :id, :name,
-                            { include_blank: "Select province" } %>
-  </div>
+    <div class="mb-3">
+      <%= f.label :address, class: "form-label" %>
+      <%= f.text_field :address, class: "form-control" %>
+    </div>
 
-  <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
-    <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
-  <% end %>
+    <div class="mb-3">
+      <%= f.label :city, class: "form-label" %>
+      <%= f.text_field :city, class: "form-control" %>
+    </div>
 
-  <div class="field">
-    <%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
-    <%= f.password_field :password, autocomplete: "new-password" %>
-    <% if @minimum_password_length %>
-      <br />
-      <em><%= @minimum_password_length %> characters minimum</em>
+    <div class="mb-3">
+      <%= f.label :postal_code, class: "form-label" %>
+      <%= f.text_field :postal_code, class: "form-control" %>
+    </div>
+
+    <div class="mb-3">
+      <%= f.label :province_id, "Province", class: "form-label" %>
+      <%= f.collection_select :province_id,
+            Province.all, :id, :name,
+            { include_blank: "Select province" },
+            { class: "form-select" } %>
+    </div>
+
+    <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+      <div class="alert alert-info mb-3">
+        Waiting confirmation for:
+        <strong><%= resource.unconfirmed_email %></strong>
+      </div>
     <% end %>
-  </div>
 
-  <div class="field">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-  </div>
+    <hr class="my-4">
 
-  <div class="field">
-    <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
-    <%= f.password_field :current_password, autocomplete: "current-password" %>
-  </div>
+    <h3 class="mb-3">Change Password</h3>
 
-  <div class="actions">
-    <%= f.submit "Update" %>
-  </div>
-<% end %>
+    <div class="mb-3">
+      <%= f.label :password, class: "form-label" %>
+      <small class="text-muted d-block">
+        (Leave blank if you do not want to change it)
+      </small>
+      <%= f.password_field :password,
+            autocomplete: "new-password",
+            class: "form-control" %>
 
-<h3>Cancel my account</h3>
+      <% if @minimum_password_length %>
+        <small class="text-muted d-block mt-1">
+          <%= @minimum_password_length %> characters minimum
+        </small>
+      <% end %>
+    </div>
 
-<div>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete %></div>
+    <div class="mb-3">
+      <%= f.label :password_confirmation, class: "form-label" %>
+      <%= f.password_field :password_confirmation,
+            autocomplete: "new-password",
+            class: "form-control" %>
+    </div>
 
-<%= link_to "Back", :back %>
+    <div class="mb-4">
+      <%= f.label :current_password, class: "form-label" %>
+      <small class="text-muted d-block">
+        (Required to confirm your changes)
+      </small>
+      <%= f.password_field :current_password,
+            autocomplete: "current-password",
+            class: "form-control" %>
+    </div>
+
+    <div>
+      <%= f.submit "Update Account", class: "btn btn-primary" %>
+      <%= link_to "Back", root_path, class: "btn btn-secondary ms-2" %>
+    </div>
+
+  <% end %>
+</div>
+
+<div class="card p-4">
+  <h3 class="text-danger mb-3">Cancel My Account</h3>
+
+  <%= button_to "Delete Account",
+        registration_path(resource_name),
+        data: { confirm: "Are you sure you want to delete your account?" },
+        method: :delete,
+        class: "btn btn-danger" %>
+</div>

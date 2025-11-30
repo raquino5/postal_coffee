@@ -1,24 +1,34 @@
 <!-- app/views/shared/_product_sidebar.html.erb -->
+
 <div class="card sidebar-card">
-  <h3>Shopping</h3>
+  <h3 class="mb-2">Shopping</h3>
+
   <ul class="sidebar-list">
     <li>
-      <%= link_to cart_path, class: "sidebar-link" do %>
-        View Cart (<%= cart_count %>)
+      <%= link_to cart_path, class: "sidebar-link d-flex align-items-center gap-2" do %>
+        🛒 <span>View Cart (<%= cart_count %>)</span>
       <% end %>
     </li>
   </ul>
 </div>
 
 <div class="card sidebar-card">
-  <h3>Filter by Category</h3>
+  <h3 class="mb-2">Categories</h3>
+
   <ul class="sidebar-list">
     <li>
-      <%= link_to "All Products", products_path, class: "sidebar-link" %>
+      <%= link_to products_path,
+            class: "sidebar-link d-flex align-items-center gap-2" do %>
+        📦 <span>All Products</span>
+      <% end %>
     </li>
+
     <% categories.each do |category| %>
       <li>
-        <%= link_to category.name, category_path(category), class: "sidebar-link" %>
+        <%= link_to category_path(category),
+              class: "sidebar-link d-flex align-items-center gap-2" do %>
+          ● <span><%= category.name %></span>
+        <% end %>
       </li>
     <% end %>
   </ul>
