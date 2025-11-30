@@ -1,0 +1,17 @@
+<% if breadcrumbs.present? && breadcrumbs.size > 1 %>
+  <nav class="breadcrumbs-wrapper" aria-label="Breadcrumb">
+    <ol class="breadcrumb mb-3">
+      <% breadcrumbs.each_with_index do |(label, path), index| %>
+        <% last = (index == breadcrumbs.length - 1) %>
+
+        <li class="breadcrumb-item <%= 'active' if last %>">
+          <% if last %>
+            <span aria-current="page"><%= label %></span>
+          <% else %>
+            <%= link_to label, path %>
+          <% end %>
+        </li>
+      <% end %>
+    </ol>
+  </nav>
+<% end %>

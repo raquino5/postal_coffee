@@ -83,6 +83,8 @@
 
     <main class="site-main">
       <div class="container">
+        <%= render "shared/breadcrumbs" %>
+
         <% flash.each do |key, message| %>
           <div class="flash flash-<%= key %>">
             <%= message %>
