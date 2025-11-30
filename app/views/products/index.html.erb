@@ -10,11 +10,12 @@
     <h3>Shopping</h3>
     <ul>
       <li>
-      <%= link_to cart_path do %>
-        View Cart (<%= cart_count %>)
-      <% end %>
+        <%= link_to cart_path do %>
+          View Cart (<%= cart_count %>)
+        <% end %>
       </li>
     </ul>
+
     <h3>Filter by Category</h3>
     <ul>
       <li><%= link_to "All Products", products_path %></li>

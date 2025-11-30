@@ -18,25 +18,48 @@
     <link rel="apple-touch-icon" href="/icon.png">
 
     <%# Includes all stylesheet files in app/assets/stylesheets %>
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "postal", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
-    <header style="padding: 0.5rem 1rem; border-bottom: 1px solid #ccc; margin-bottom: 1rem;">
-      <%= link_to "Home", root_path %> |
+  <body class="site-body">
+    <header class="site-header">
+      <div class="container nav-container">
+        <%= link_to "Postal Coffee", root_path, class: "brand-logo" %>
 
-      <% if user_signed_in? %>
-        Logged in as <%= current_user.email %> |
-        <%= link_to "My Orders", my_orders_path %> |
-        <%= link_to "Edit Account", edit_user_registration_path %> |
-        <%= link_to "Logout", destroy_user_session_path, data: { turbo_method: :delete } %>
-      <% else %>
-        <%= link_to "Sign Up", new_user_registration_path %> |
-        <%= link_to "Login", new_user_session_path %>
-      <% end %>
+        <nav class="main-nav">
+          <%= link_to "Home", root_path, class: "nav-link" %>
+
+          <% if user_signed_in? %>
+            <span class="nav-text">Logged in as <%= current_user.email %></span>
+            <%= link_to "My Orders", my_orders_path, class: "nav-link" %>
+            <%= link_to "Edit Account", edit_user_registration_path, class: "nav-link" %>
+            <%= link_to "Logout", destroy_user_session_path, data: { turbo_method: :delete }, class: "nav-link nav-link-secondary" %>
+          <% else %>
+            <%= link_to "Sign Up", new_user_registration_path, class: "nav-link" %>
+            <%= link_to "Login", new_user_session_path, class: "nav-link nav-cta" %>
+          <% end %>
+        </nav>
+      </div>
     </header>
 
-  <%= yield %>
+    <main class="site-main">
+      <div class="container">
+        <% flash.each do |key, message| %>
+          <div class="flash flash-<%= key %>">
+            <%= message %>
+          </div>
+        <% end %>
+
+        <%= yield %>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-content">
+        <p>&copy; <%= Time.current.year %> Postal Coffee. All rights reserved.</p>
+        <p class="footer-subtext">Roasted with care. Delivered with love.</p>
+      </div>
+    </footer>
   </body>
 </html>
