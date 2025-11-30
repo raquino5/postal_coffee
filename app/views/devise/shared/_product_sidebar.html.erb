@@ -1,0 +1,25 @@
+<!-- app/views/shared/_product_sidebar.html.erb -->
+<div class="card sidebar-card">
+  <h3>Shopping</h3>
+  <ul class="sidebar-list">
+    <li>
+      <%= link_to cart_path, class: "sidebar-link" do %>
+        View Cart (<%= cart_count %>)
+      <% end %>
+    </li>
+  </ul>
+</div>
+
+<div class="card sidebar-card">
+  <h3>Filter by Category</h3>
+  <ul class="sidebar-list">
+    <li>
+      <%= link_to "All Products", products_path, class: "sidebar-link" %>
+    </li>
+    <% categories.each do |category| %>
+      <li>
+        <%= link_to category.name, category_path(category), class: "sidebar-link" %>
+      </li>
+    <% end %>
+  </ul>
+</div>

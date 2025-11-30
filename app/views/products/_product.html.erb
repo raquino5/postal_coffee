@@ -1,0 +1,32 @@
+<!-- app/views/products/_product.html.erb -->
+<div class="card product-card">
+  <% if product.image.attached? %>
+    <div class="product-image">
+      <%= image_tag url_for(product.image), alt: product.name %>
+    </div>
+  <% end %>
+
+  <h2 class="product-name">
+    <%= link_to product.name, product_path(product), class: "product-name-link" %>
+  </h2>
+
+  <p class="product-meta">
+    <strong>Category:</strong> <%= product.category.name %>
+  </p>
+
+  <p class="product-price">
+    <%= number_to_currency(product.price) %>
+  </p>
+
+  <div class="product-badges">
+    <% if product.on_sale? %>
+      <span class="badge badge-sale">On Sale</span>
+    <% end %>
+
+    <% if product.created_at >= 3.days.ago %>
+      <span class="badge badge-new">New</span>
+    <% elsif product.updated_at >= 3.days.ago && product.created_at < 3.days.ago %>
+      <span class="badge badge-updated">Recently updated</span>
+    <% end %>
+  </div>
+</div>

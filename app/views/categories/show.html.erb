@@ -1,46 +1,17 @@
 <h1><%= @category.name %></h1>
 
-<p>
-  <%= link_to "Back to all products", root_path %>
-</p>
-
-<div style="display: flex; gap: 2rem;">
-  <!-- Optional: same sidebar as index -->
-  <aside style="width: 200px;">
-    <h3>Other Categories</h3>
-    <ul>
-      <li><%= link_to "All Products", root_path %></li>
-      <% @categories.each do |category| %>
-        <li>
-          <%= link_to category.name, category_path(category) %>
-        </li>
-      <% end %>
-    </ul>
+<div class="layout-with-sidebar">
+  <aside class="sidebar">
+    <%= render "shared/devise/product_sidebar", categories: @categories, cart_count: cart_count %>
   </aside>
 
-  <!-- Products in this category -->
-  <section style="flex: 1;">
+  <section class="products-main">
     <% if @products.any? %>
-      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1.5rem;">
-        <% @products.each do |product| %>
-          <div style="border: 1px solid #ccc; padding: 1rem;">
-            <% if product.image.attached? %>
-              <div style="margin-bottom: 0.5rem;">
-                <%= image_tag url_for(product.image), style: "max-width: 100%; height: auto;" %>
-              </div>
-            <% end %>
-
-            <h2 style="font-size: 1.1rem;">
-              <%= link_to product.name, product_path(product) %>
-            </h2>
-
-            <p><strong>Price:</strong> $<%= product.price %></p>
-
-            <% if product.on_sale? %>
-              <p style="color: red; font-weight: bold;">On Sale!</p>
-            <% end %>
-          </div>
-        <% end %>
+      <div class="product-grid">
+        <%= render @products %>
+      </div>
+      <div class="pagination-wrapper">
+        <%= paginate @products %>
       </div>
     <% else %>
       <p>No products in this category.</p>

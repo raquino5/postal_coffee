@@ -1,97 +1,23 @@
-<h1 class="mb-3">Our Products</h1>
+<h1>Our Products</h1>
 
-<div class="page-intro mb-3 d-flex justify-content-between align-items-center">
-  <p>Explore our freshly roasted coffees and blends.</p>
+<p>
   <%= link_to "Search Products", search_products_path, class: "btn btn-secondary" %>
-</div>
+</p>
 
-<div class="row">
-  <!-- Sidebar -->
-  <aside class="col-12 col-md-3 mb-3">
-    <div class="card sidebar-card mb-3">
-      <h3>Shopping</h3>
-      <ul class="sidebar-list">
-        <li>
-          <%= link_to cart_path, class: "sidebar-link" do %>
-            View Cart (<%= cart_count %>)
-          <% end %>
-        </li>
-      </ul>
-    </div>
-
-    <div class="card sidebar-card">
-      <h3>Filter by Category</h3>
-      <ul class="sidebar-list">
-        <li><%= link_to "All Products", products_path, class: "sidebar-link" %></li>
-        <% @categories.each do |category| %>
-          <li>
-            <%= link_to category.name, category_path(category), class: "sidebar-link" %>
-          </li>
-        <% end %>
-      </ul>
-    </div>
+<div class="layout-with-sidebar">
+  <aside class="sidebar">
+    <%= render "devise/shared/product_sidebar",
+           categories: @categories,
+           cart_count: cart_count %>
   </aside>
 
-  <!-- Main products area -->
-  <section class="col-12 col-md-9">
-    <div class="card product-filters mb-3">
-      <h3>Filter by Status</h3>
-      <p class="filter-links">
-        <%= link_to "All",
-                    products_path,
-                    class: "filter-link#{' filter-link--active' if @filter.blank?}" %>
-        |
-        <%= link_to "On Sale",
-                    products_path(filter: "on_sale"),
-                    class: "filter-link#{' filter-link--active' if @filter == 'on_sale'}" %>
-        |
-        <%= link_to "New (last 3 days)",
-                    products_path(filter: "new"),
-                    class: "filter-link#{' filter-link--active' if @filter == 'new'}" %>
-        |
-        <%= link_to "Recently Updated",
-                    products_path(filter: "recently_updated"),
-                    class: "filter-link#{' filter-link--active' if @filter == 'recently_updated'}" %>
-      </p>
-    </div>
+  <section class="products-main">
+    <%= render "products/filters", filter: @filter %>
 
     <% if @products.any? %>
-      <div class="row g-3">
-        <% @products.each do |product| %>
-          <div class="col-12 col-sm-6 col-lg-4">
-            <div class="card product-card h-100">
-              <% if product.image.attached? %>
-                <div class="product-image">
-                  <%= image_tag url_for(product.image), alt: product.name %>
-                </div>
-              <% end %>
-
-              <h2 class="product-name">
-                <%= link_to product.name, product_path(product), class: "product-name-link" %>
-              </h2>
-
-              <p class="product-meta">
-                <strong>Category:</strong> <%= product.category.name %>
-              </p>
-
-              <p class="product-price">
-                <%= number_to_currency(product.price) %>
-              </p>
-
-              <div class="product-badges">
-                <% if product.on_sale? %>
-                  <span class="badge badge-sale">On Sale</span>
-                <% end %>
-
-                <% if product.created_at >= 3.days.ago %>
-                  <span class="badge badge-new">New</span>
-                <% elsif product.updated_at >= 3.days.ago && product.created_at < 3.days.ago %>
-                  <span class="badge badge-updated">Recently updated</span>
-                <% end %>
-              </div>
-            </div>
-          </div>
-        <% end %>
+      <div class="product-grid">
+        <%= render @products %>
+        <%# this automatically uses _product.html.erb for each @product %>
       </div>
 
       <div class="pagination-wrapper">
