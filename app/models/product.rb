@@ -8,12 +8,12 @@ class Product < ApplicationRecord
   scope :active, -> { where(is_active: true) }
   scope :on_sale, -> { active.where(on_sale: true) }
 
-  scope :new_products, -> { active.where('created_at >= ?', 3.days.ago) }
+  scope :new_products, -> { active.where("created_at >= ?", 3.days.ago) }
 
   scope :recently_updated, -> {
     active
-      .where('updated_at >= ?', 3.days.ago)
-      .where('created_at < ?', 3.days.ago)
+      .where("updated_at >= ?", 3.days.ago)
+      .where("created_at < ?", 3.days.ago)
   }
 
   validates :name, presence: true
@@ -21,15 +21,15 @@ class Product < ApplicationRecord
   validates :price, presence: true, numericality: { greater_than_or_equal_to: 0 }
 
   def image_small
-    image.variant(resize_to_fill: [200, 200]).processed
+    image.variant(resize_to_fill: [ 200, 200 ]).processed
   end
 
   def image_medium
-    image.variant(resize_to_fill: [400, 400]).processed
+    image.variant(resize_to_fill: [ 400, 400 ]).processed
   end
 
   def image_large
-    image.variant(resize_to_fit: [800, 800]).processed
+    image.variant(resize_to_fit: [ 800, 800 ]).processed
   end
 
   def self.ransackable_attributes(auth_object = nil)

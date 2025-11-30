@@ -1,6 +1,5 @@
 class ProductsController < ApplicationController
   def index
-
     unless session[:visited]
       flash[:greeting] = "Welcome to Postal Coffee! ☕"
       session[:visited] = true
@@ -10,11 +9,11 @@ class ProductsController < ApplicationController
 
     @products =
       case @filter
-      when 'on_sale'
+      when "on_sale"
         Product.on_sale
-      when 'new'
+      when "new"
         Product.new_products
-      when 'recently_updated'
+      when "recently_updated"
         Product.recently_updated
       else
         Product.active

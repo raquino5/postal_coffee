@@ -4,7 +4,7 @@ module TaxTable
     "ON" => { gst: 0.0,  pst: 0.0,  hst: 0.13 },
     "BC" => { gst: 0.05, pst: 0.07, hst: 0.0 },
     "QC" => { gst: 0.05, pst: 0.09975, hst: 0.0 },
-    "SK" => { gst: 0.05, pst: 0.06, hst: 0.0 },
+    "SK" => { gst: 0.05, pst: 0.06, hst: 0.0 }
   }.freeze
 
   def self.for(province_code)

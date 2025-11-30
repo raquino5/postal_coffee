@@ -1,6 +1,6 @@
 # app/admin/orders.rb
 ActiveAdmin.register Order do
-  actions :all, except: [:new, :destroy]
+  actions :all, except: [ :new, :destroy ]
 
   permit_params :status
 

@@ -13,7 +13,7 @@ ActiveAdmin.register Product do
     id_column
     column "Image" do |product|
       if product.image.attached?
-        image_tag product.image.variant(resize_to_fill: [60, 60]), style: "border-radius: 6px;"
+        image_tag product.image.variant(resize_to_fill: [ 60, 60 ]), style: "border-radius: 6px;"
       else
         "(no image)"
       end
@@ -46,7 +46,7 @@ ActiveAdmin.register Product do
       f.input :description
       f.input :tags, as: :check_boxes, collection: Tag.all
       f.input :image, as: :file,
-        hint: (f.object.image.attached? ? image_tag(f.object.image.variant(resize_to_fill: [100, 100])) : content_tag(:span, "No image uploaded yet"))
+        hint: (f.object.image.attached? ? image_tag(f.object.image.variant(resize_to_fill: [ 100, 100 ])) : content_tag(:span, "No image uploaded yet"))
     end
 
     f.actions
@@ -69,7 +69,7 @@ ActiveAdmin.register Product do
       end
       row :image do |product|
         if product.image.attached?
-          image_tag product.image.variant(resize_to_fit: [400, 400])
+          image_tag product.image.variant(resize_to_fit: [ 400, 400 ])
         else
           "(no image)"
         end

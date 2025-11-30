@@ -1,6 +1,6 @@
 class OrdersController < ApplicationController
   before_action :load_cart
-  before_action :authenticate_user!, only: [:customer_orders]
+  before_action :authenticate_user!, only: [ :customer_orders ]
 
   def new
     redirect_to cart_path, alert: "Your cart is empty." and return if @cart.blank?
@@ -39,7 +39,7 @@ class OrdersController < ApplicationController
         begin
           checkout_session = Stripe::Checkout::Session.create(
             mode: "payment",
-            payment_method_types: ["card"],
+            payment_method_types: [ "card" ],
             line_items: stripe_line_items_for(@order),
             success_url: success_payments_url + "?session_id={CHECKOUT_SESSION_ID}",
             cancel_url:  cancel_payments_url(order_id: @order.id)
