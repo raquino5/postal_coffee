@@ -1,87 +1,100 @@
-<h1>Our Products</h1>
+<h1 class="mb-3">Our Products</h1>
 
-<p>
-  <%= link_to "Search Products", search_products_path %>
-</p>
+<div class="page-intro mb-3 d-flex justify-content-between align-items-center">
+  <p>Explore our freshly roasted coffees and blends.</p>
+  <%= link_to "Search Products", search_products_path, class: "btn btn-secondary" %>
+</div>
 
-<div style="display: flex; gap: 2rem;">
-  <!-- Sidebar: Categories -->
-  <aside style="width: 200px;">
-    <h3>Shopping</h3>
-    <ul>
-      <li>
-        <%= link_to cart_path do %>
-          View Cart (<%= cart_count %>)
-        <% end %>
-      </li>
-    </ul>
-
-    <h3>Filter by Category</h3>
-    <ul>
-      <li><%= link_to "All Products", products_path %></li>
-      <% @categories.each do |category| %>
+<div class="row">
+  <!-- Sidebar -->
+  <aside class="col-12 col-md-3 mb-3">
+    <div class="card sidebar-card mb-3">
+      <h3>Shopping</h3>
+      <ul class="sidebar-list">
         <li>
-          <%= link_to category.name, category_path(category) %>
+          <%= link_to cart_path, class: "sidebar-link" do %>
+            View Cart (<%= cart_count %>)
+          <% end %>
         </li>
-      <% end %>
-    </ul>
+      </ul>
+    </div>
+
+    <div class="card sidebar-card">
+      <h3>Filter by Category</h3>
+      <ul class="sidebar-list">
+        <li><%= link_to "All Products", products_path, class: "sidebar-link" %></li>
+        <% @categories.each do |category| %>
+          <li>
+            <%= link_to category.name, category_path(category), class: "sidebar-link" %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
   </aside>
 
-  <!-- Main: Products list -->
-  <section style="flex: 1;">
-
-    <div style="margin-bottom: 1rem; padding: 0.5rem 0;">
+  <!-- Main products area -->
+  <section class="col-12 col-md-9">
+    <div class="card product-filters mb-3">
       <h3>Filter by Status</h3>
-      <p>
+      <p class="filter-links">
         <%= link_to "All",
                     products_path,
-                    style: (@filter.blank? ? "font-weight: bold; text-decoration: underline;" : "") %>
+                    class: "filter-link#{' filter-link--active' if @filter.blank?}" %>
         |
         <%= link_to "On Sale",
                     products_path(filter: "on_sale"),
-                    style: (@filter == "on_sale" ? "font-weight: bold; text-decoration: underline; color: red;" : "") %>
+                    class: "filter-link#{' filter-link--active' if @filter == 'on_sale'}" %>
         |
         <%= link_to "New (last 3 days)",
                     products_path(filter: "new"),
-                    style: (@filter == "new" ? "font-weight: bold; text-decoration: underline;" : "") %>
+                    class: "filter-link#{' filter-link--active' if @filter == 'new'}" %>
         |
         <%= link_to "Recently Updated",
                     products_path(filter: "recently_updated"),
-                    style: (@filter == "recently_updated" ? "font-weight: bold; text-decoration: underline;" : "") %>
+                    class: "filter-link#{' filter-link--active' if @filter == 'recently_updated'}" %>
       </p>
     </div>
 
     <% if @products.any? %>
-      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1.5rem;">
+      <div class="row g-3">
         <% @products.each do |product| %>
-          <div style="border: 1px solid #ccc; padding: 1rem;">
-            <% if product.image.attached? %>
-              <div style="margin-bottom: 0.5rem;">
-                <%= image_tag url_for(product.image), style: "max-width: 100%; height: auto;" %>
+          <div class="col-12 col-sm-6 col-lg-4">
+            <div class="card product-card h-100">
+              <% if product.image.attached? %>
+                <div class="product-image">
+                  <%= image_tag url_for(product.image), alt: product.name %>
+                </div>
+              <% end %>
+
+              <h2 class="product-name">
+                <%= link_to product.name, product_path(product), class: "product-name-link" %>
+              </h2>
+
+              <p class="product-meta">
+                <strong>Category:</strong> <%= product.category.name %>
+              </p>
+
+              <p class="product-price">
+                <%= number_to_currency(product.price) %>
+              </p>
+
+              <div class="product-badges">
+                <% if product.on_sale? %>
+                  <span class="badge badge-sale">On Sale</span>
+                <% end %>
+
+                <% if product.created_at >= 3.days.ago %>
+                  <span class="badge badge-new">New</span>
+                <% elsif product.updated_at >= 3.days.ago && product.created_at < 3.days.ago %>
+                  <span class="badge badge-updated">Recently updated</span>
+                <% end %>
               </div>
-            <% end %>
-
-            <h2 style="font-size: 1.1rem;">
-              <%= link_to product.name, product_path(product) %>
-            </h2>
-
-            <p><strong>Category:</strong> <%= product.category.name %></p>
-            <p><strong>Price:</strong> $<%= product.price %></p>
-
-            <% if product.on_sale? %>
-              <p style="color: red; font-weight: bold;">On Sale!</p>
-            <% end %>
-
-            <% if product.created_at >= 3.days.ago %>
-              <p style="color: green; font-weight: bold;">New!</p>
-            <% elsif product.updated_at >= 3.days.ago && product.created_at < 3.days.ago %>
-              <p style="color: blue; font-weight: bold;">Recently updated</p>
-            <% end %>
+            </div>
           </div>
         <% end %>
       </div>
 
-      <div style="margin-top: 1.5rem; text-align: center;">
+      <div class="pagination-wrapper">
         <%= paginate @products %>
       </div>
     <% else %>
