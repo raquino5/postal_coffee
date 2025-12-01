@@ -1,23 +1,35 @@
-<!-- app/views/products/_product.html.erb -->
 <div class="card product-card">
-  <% if product.image.attached? %>
-    <div class="product-image">
-      <%= image_tag url_for(product.image), alt: product.name %>
-    </div>
-  <% end %>
 
+  <%# ------------------ PRODUCT IMAGE ------------------ %>
+  <div class="product-image">
+    <% if product.respond_to?(:image) && product.image.attached? %>
+      <%= image_tag url_for(product.image), alt: product.name %>
+
+    <% elsif product.image_url.present? %>
+      <%= image_tag product.image_url, alt: product.name %>
+
+    <% else %>
+      <%= image_tag "placeholder.png", alt: "No image available" %>
+      <%# Place a placeholder image in app/assets/images/placeholder.png %>
+    <% end %>
+  </div>
+
+  <%# ------------------ PRODUCT NAME ------------------ %>
   <h2 class="product-name">
     <%= link_to product.name, product_path(product), class: "product-name-link" %>
   </h2>
 
+  <%# ------------------ CATEGORY ------------------ %>
   <p class="product-meta">
     <strong>Category:</strong> <%= product.category.name %>
   </p>
 
+  <%# ------------------ PRICE ------------------ %>
   <p class="product-price">
     <%= number_to_currency(product.price) %>
   </p>
 
+  <%# ------------------ BADGES ------------------ %>
   <div class="product-badges">
     <% if product.on_sale? %>
       <span class="badge badge-sale">On Sale</span>
@@ -29,4 +41,5 @@
       <span class="badge badge-updated">Recently updated</span>
     <% end %>
   </div>
+
 </div>
